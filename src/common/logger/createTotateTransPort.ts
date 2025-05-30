@@ -1,4 +1,4 @@
-import * as DailyRotateFile from 'winston-daily-rotate-file';
+import DailyRotateFile from 'winston-daily-rotate-file';
 import * as winston from 'winston';
 
 /**
