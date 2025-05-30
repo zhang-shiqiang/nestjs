@@ -7,17 +7,23 @@ import {
   Logger,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import * as requestIp from 'request-ip';
+
+interface IRequest {
+  headers: Record<string, string>;
+  query: Record<string, string>;
+  body: Record<string, string>;
+  params: Record<string, string>;
+}
 
 @Catch()
 export class AllExceptionFillter implements ExceptionFilter {
   private readonly logger = new Logger();
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
-  catch(exception: any, host: ArgumentsHost) {
+  catch(exception: unknown, host: ArgumentsHost) {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    const request: any = ctx.getRequest();
-    const response: unknown = ctx.getResponse();
+    const request: IRequest = ctx.getRequest();
+    const response = ctx.getResponse();
 
     const httpStatus =
       exception instanceof HttpException
@@ -32,7 +38,7 @@ export class AllExceptionFillter implements ExceptionFilter {
       body: request.body,
       params: request.params,
       timeStamp: new Date().toISOString(),
-      ip: requestIp.getClientIp(request),
+      // ip: requestIp.getClientIp(request),
       exception: exception['name'],
       error: msg,
     };
