@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/user.entity';
 
 @Module({
   imports: [
@@ -9,12 +10,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       imports: [],
       useFactory: async () => ({
         type: 'mysql',
-        host: 'localhost',
+        host: '81.69.47.226',
         port: 3306,
         username: 'root',
-        password: '123456',
+        password: '!Aa123456',
         database: 'testdb',
         synchronize: true,
+        entities: [User],
       }),
     }),
     UserModule,
